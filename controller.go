@@ -12,16 +12,25 @@ func hello(c *gin.Context) {
 }
 
 func getCards(c *gin.Context) {
-	var board = openBoard("go-blog-board.json")
+	var board = openBoard("jsonfiles/NTMYxJessica.json")
 
 	completeListID := getCompleteListID(board)
 	customFieldPointID := getCustomFieldPointsID(board)
 
+	// fmt.Println(completeListID)
+	// fmt.Println(customFieldPointID)
+
 	res := getCardNameandPoints(board, completeListID, customFieldPointID)
+	totalPoint := calculatePoints(res)
+
+	data := map[string]interface{}{
+		"cards":       res,
+		"totalPoints": totalPoint,
+	}
 
 	c.JSON(200, gin.H{
 		"status":  "200",
 		"message": "OK",
-		"data":    res,
+		"data":    data,
 	})
 }

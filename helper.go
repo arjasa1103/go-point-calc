@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"os"
+	"strconv"
 	"strings"
 )
 
@@ -29,7 +30,7 @@ func getCompleteListID(board TrelloBoard) string {
 	lists := board.Lists
 
 	for _, list := range lists {
-		if strings.ToLower(list.Name) == "completed" || strings.ToLower(list.Name) == "complete" {
+		if strings.Contains(strings.ToLower(list.Name), "complete") {
 			return list.ID
 		}
 	}
@@ -43,7 +44,7 @@ func getCustomFieldPointsID(board TrelloBoard) string {
 	customFields := board.CustomFields
 
 	for _, customField := range customFields {
-		if strings.ToLower(customField.Name) == "points" || strings.ToLower(customField.ID) == "point" {
+		if strings.Contains(strings.ToLower(customField.Name), "point") {
 			return customField.ID
 		}
 	}
@@ -72,4 +73,18 @@ func getCardNameandPoints(board TrelloBoard, completeListID string, customFieldP
 	}
 
 	return results
+}
+
+func calculatePoints(data []CardNamePoints) int64 {
+	var totalPoints int
+
+	for _, cardNamePoint := range data {
+		point, err := strconv.Atoi(cardNamePoint.Points)
+		if err != nil {
+			return -1
+		}
+		totalPoints = totalPoints + point
+	}
+
+	return int64(totalPoints)
 }
