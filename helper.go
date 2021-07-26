@@ -61,7 +61,7 @@ func getCardNameandPoints(board TrelloBoard, completeListID string, customFieldP
 	for _, card := range cards {
 		var cardNamePoints CardNamePoints
 
-		if card.IDList == completeListID {
+		if card.IDList == completeListID && !card.Closed {
 			cardNamePoints.Name = card.Name
 			for _, customField := range card.CustomFieldItems {
 				if customField.IDCustomField == customFieldPointsID {
@@ -81,7 +81,7 @@ func calculatePoints(data []CardNamePoints) int64 {
 	for _, cardNamePoint := range data {
 		point, err := strconv.Atoi(cardNamePoint.Points)
 		if err != nil {
-			return -1
+			continue
 		}
 		totalPoints = totalPoints + point
 	}

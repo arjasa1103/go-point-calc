@@ -12,7 +12,7 @@ func hello(c *gin.Context) {
 }
 
 func getCards(c *gin.Context) {
-	var board = openBoard("jsonfiles/NTMYxJessica.json")
+	var board = openBoard("jsonfiles/NTMYxAndrea.json")
 
 	completeListID := getCompleteListID(board)
 	customFieldPointID := getCustomFieldPointsID(board)
